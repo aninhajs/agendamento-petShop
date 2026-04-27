@@ -1,7 +1,10 @@
+import AppRoutes from "./routes/AppRoutes";
+import "./index.css";
+
 function App() {
   return (
     <>
-      <h1>Olá! mundo</h1>
+      <AppRoutes />
     </>
   );
 }
