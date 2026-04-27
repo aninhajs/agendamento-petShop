@@ -5,6 +5,9 @@ import Login from "../pages/Login";
 import Cadastro from "../pages/Cadastro";
 import Agendamento from "../pages/Agendamento";
 import Dashboard from "../pages/Dashboard";
+import Clientes from "../pages/Clientes";
+import Pets from "../pages/Pets";
+import Configuracoes from "../pages/Configuracoes";
 
 function AppRoutes() {
   return (
@@ -13,8 +16,11 @@ function AppRoutes() {
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/cadastro" element={<Cadastro />} />
-        <Route path="/agendamento" element={<Agendamento />} />
         <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/clientes" element={<Clientes />} />
+        <Route path="/pets" element={<Pets />} />
+        <Route path="/agendamentos-admin" element={<Agendamento />} />
+        <Route path="/config" element={<Configuracoes />} />
       </Routes>
     </BrowserRouter>
   );

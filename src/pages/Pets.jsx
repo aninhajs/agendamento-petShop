@@ -1,15 +1,14 @@
 import AdminLayout from "../componets/AdminLayout";
 
-function Agendamentos() {
+function Pets() {
   return (
     <AdminLayout>
-      <h1 className="text-3xl font-bold mb-6">Agendamentos</h1>
-
+      <h1 className="text-3xl font-bold mb-6">Pets</h1>
       <div className="bg-white p-6 rounded-xl shadow">
-        Lista de horários marcados.
+        Lista de pets cadastrados.
       </div>
     </AdminLayout>
   );
 }
 
-export default Agendamentos;
+export default Pets;
