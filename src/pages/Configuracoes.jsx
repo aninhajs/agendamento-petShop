@@ -1,4 +1,4 @@
-import AdminLayout from "../componets/AdminLayout";
+import AdminLayout from "../components/AdminLayout";
 
 function Configuracoes() {
   return (
