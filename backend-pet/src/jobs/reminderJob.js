@@ -123,7 +123,7 @@ export function iniciarJobLembretes() {
 }
 
 /**
- * 🧪 Função para testar o job manualmente (útil para desenvolvimento)
+ *  Função para testar o job manualmente (útil para desenvolvimento)
  * Execute: node -e "require('./src/jobs/reminderJob.js').testarJobManual()"
  */
 export async function testarJobManual() {
