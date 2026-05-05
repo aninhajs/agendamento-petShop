@@ -3,7 +3,7 @@ import prisma from "../config/prisma.js";
 import { notificarLembrete } from "../services/notificationService.js";
 
 /**
- * 🔄 Job: Enviar lembretes 24h antes dos agendamentos
+ *  Job: Enviar lembretes 24h antes dos agendamentos
  * Executa todos os dias às 10:00 da manhã
  */
 export function iniciarJobLembretes() {
@@ -12,8 +12,8 @@ export function iniciarJobLembretes() {
   // Exemplo: "0 10 * * *" = minuto 0, hora 10, todos os dias
 
   cron.schedule("0 10 * * *", async () => {
-    console.log("🔄 [CRON] Iniciando job de lembretes...");
-    console.log(`📅 Data/Hora: ${new Date().toLocaleString("pt-BR")}`);
+    console.log(" [CRON] Iniciando job de lembretes...");
+    console.log(` Data/Hora: ${new Date().toLocaleString("pt-BR")}`);
 
     try {
       // Calcular data de amanhã (início e fim do dia)
@@ -25,7 +25,7 @@ export function iniciarJobLembretes() {
       depoisDeAmanha.setDate(depoisDeAmanha.getDate() + 1);
 
       console.log(
-        `🔍 Buscando agendamentos para ${amanha.toLocaleDateString("pt-BR")}...`,
+        ` Buscando agendamentos para ${amanha.toLocaleDateString("pt-BR")}...`,
       );
 
       // Buscar agendamentos para amanhã com status ativo
@@ -61,11 +61,11 @@ export function iniciarJobLembretes() {
       });
 
       console.log(
-        `📨 Encontrados ${agendamentos.length} agendamentos para notificar`,
+        ` Encontrados ${agendamentos.length} agendamentos para notificar`,
       );
 
       if (agendamentos.length === 0) {
-        console.log("✅ [CRON] Nenhum agendamento para amanhã. Job concluído.");
+        console.log(" [CRON] Nenhum agendamento para amanhã. Job concluído.");
         return;
       }
 
@@ -80,7 +80,7 @@ export function iniciarJobLembretes() {
             .join(", ");
 
           console.log(
-            `📤 Enviando lembrete para ${agendamento.user.name} (${agendamento.user.email}) - Pet(s): ${nomePets}`,
+            ` Enviando lembrete para ${agendamento.user.name} (${agendamento.user.email}) - Pet(s): ${nomePets}`,
           );
 
           const resultado = await notificarLembrete(agendamento.id);
@@ -88,12 +88,12 @@ export function iniciarJobLembretes() {
           if (resultado.success) {
             enviados++;
             console.log(
-              `✅ Lembrete enviado com sucesso para agendamento #${agendamento.id}`,
+              ` Lembrete enviado com sucesso para agendamento #${agendamento.id}`,
             );
           } else {
             erros++;
             console.error(
-              `❌ Falha ao enviar lembrete para agendamento #${agendamento.id}`,
+              ` Falha ao enviar lembrete para agendamento #${agendamento.id}`,
             );
           }
 
@@ -102,24 +102,24 @@ export function iniciarJobLembretes() {
         } catch (error) {
           erros++;
           console.error(
-            `❌ Erro ao processar agendamento #${agendamento.id}:`,
+            ` Erro ao processar agendamento #${agendamento.id}:`,
             error.message,
           );
         }
       }
 
-      console.log("\n📊 [CRON] Resumo do Job:");
-      console.log(`   ✅ Enviados: ${enviados}`);
-      console.log(`   ❌ Erros: ${erros}`);
-      console.log(`   📝 Total: ${agendamentos.length}`);
-      console.log("✅ [CRON] Job de lembretes concluído!\n");
+      console.log("\n [CRON] Resumo do Job:");
+      console.log(`   Enviados: ${enviados}`);
+      console.log(`   Erros: ${erros}`);
+      console.log(`   Total: ${agendamentos.length}`);
+      console.log(" [CRON] Job de lembretes concluído!\n");
     } catch (error) {
-      console.error("❌ [CRON] Erro crítico no job de lembretes:", error);
+      console.error(" [CRON] Erro crítico no job de lembretes:", error);
     }
   });
 
-  console.log("✅ [CRON] Job de lembretes inicializado!");
-  console.log("⏰ [CRON] Lembretes serão enviados todos os dias às 10:00");
+  console.log(" [CRON] Job de lembretes inicializado!");
+  console.log(" [CRON] Lembretes serão enviados todos os dias às 10:00");
 }
 
 /**
@@ -127,7 +127,7 @@ export function iniciarJobLembretes() {
  * Execute: node -e "require('./src/jobs/reminderJob.js').testarJobManual()"
  */
 export async function testarJobManual() {
-  console.log("🧪 [TESTE] Executando job de lembretes manualmente...\n");
+  console.log(" [TESTE] Executando job de lembretes manualmente...\n");
 
   try {
     // Buscar agendamentos para amanhã
@@ -154,26 +154,28 @@ export async function testarJobManual() {
     });
 
     console.log(
-      `📨 Encontrados ${agendamentos.length} agendamentos para amanhã`,
+      ` [TESTE] Encontrados ${agendamentos.length} agendamentos para amanhã`,
     );
 
     if (agendamentos.length === 0) {
-      console.log("ℹ️ Nenhum agendamento encontrado para teste");
-      console.log("💡 Dica: Crie um agendamento para amanhã e teste novamente");
+      console.log(" [TESTE] Nenhum agendamento encontrado para teste");
+      console.log(
+        " [TESTE] Dica: Crie um agendamento para amanhã e teste novamente",
+      );
     } else {
       for (const agendamento of agendamentos) {
         console.log(
-          `\n📤 Enviando para: ${agendamento.user.name} (${agendamento.user.email})`,
+          ` [TESTE] Enviando para: ${agendamento.user.name} (${agendamento.user.email})`,
         );
         const resultado = await notificarLembrete(agendamento.id);
         console.log(`Resultado:`, resultado);
       }
     }
 
-    console.log("\n✅ [TESTE] Teste concluído!");
+    console.log("\n [TESTE] Teste concluído!");
     await prisma.$disconnect();
   } catch (error) {
-    console.error("❌ [TESTE] Erro no teste:", error);
+    console.error(" [TESTE] Erro no teste:", error);
     await prisma.$disconnect();
     process.exit(1);
   }
