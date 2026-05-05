@@ -32,6 +32,10 @@ model Pet {
   name      String
   raca      String
   idade     Int
+  porte     String?
+  peso      Float?
+  alergias  String?
+  observacoes String?
   userId    Int
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

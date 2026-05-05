@@ -2,7 +2,7 @@ import prisma from "../config/prisma.js";
 
 export const createPet = async (req, res) => {
   try {
-    const { nome, raca, idade } = req.body;
+    const { nome, raca, idade, porte, peso, alergias, observacoes } = req.body;
 
     // Validação de campos obrigatórios
     if (!nome) {
@@ -15,7 +15,11 @@ export const createPet = async (req, res) => {
       data: {
         name: nome,
         raca: raca || "",
-        idade: idade || 0,
+        idade: parseInt(idade),
+        porte: porte || "",
+        peso: peso ? parseFloat(peso) : null,
+        alergias: alergias || "",
+        observacoes: observacoes || "",
         userId: req.user.id,
       },
     });
@@ -72,6 +76,47 @@ export const deletePet = async (req, res) => {
     console.error("Erro ao deletar pet:", error);
     res.status(500).json({
       msg: "Erro ao deletar pet",
+      error: error.message,
+    });
+  }
+};
+
+// Atualizar pet
+export const updatePet = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { nome, raca, idade, porte, peso, alergias, observacoes } = req.body;
+
+    // Verifica se o pet pertence ao usuário
+    const petExistente = await prisma.pet.findFirst({
+      where: {
+        id: parseInt(id),
+        userId: req.user.id,
+      },
+    });
+
+    if (!petExistente) {
+      return res.status(404).json({ erro: "Pet não encontrado" });
+    }
+
+    const pet = await prisma.pet.update({
+      where: { id: parseInt(id) },
+      data: {
+        name: nome,
+        raca,
+        idade: parseInt(idade),
+        porte: porte || null,
+        peso: peso ? parseFloat(peso) : null,
+        alergias: alergias || null,
+        observacoes: observacoes || null,
+      },
+    });
+
+    res.json(pet);
+  } catch (error) {
+    console.error("Erro ao atualizar pet:", error);
+    res.status(500).json({
+      msg: "Erro ao atualizar pet",
       error: error.message,
     });
   }
